@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -25,6 +26,8 @@ public class ItemStock {
 	private Double quantity;
 
 	private Integer itemId;
+	@Transient
+	private ItemMaster item;
 	private Integer departmentId;
 	private Integer officeId;
 
@@ -32,7 +35,7 @@ public class ItemStock {
 
 	private Integer validity;
 	private LocalDate expiryDate;
-
+	
 	/**
 	 * Constructors starts here
 	 */

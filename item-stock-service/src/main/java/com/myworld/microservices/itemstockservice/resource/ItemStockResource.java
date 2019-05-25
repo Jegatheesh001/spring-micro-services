@@ -1,8 +1,12 @@
 package com.myworld.microservices.itemstockservice.resource;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,7 +44,11 @@ public class ItemStockResource {
 	
 	@RequestMapping(value = "/{officeId}/{departmentId}/{barcode}", method = RequestMethod.GET)
 	public ItemStock getStock(@PathVariable Integer officeId, @PathVariable Integer departmentId, @PathVariable String barcode) {
-		return itemStockService.getStock(officeId, departmentId, barcode);
+		ItemStock stock = itemStockService.getStock(officeId, departmentId, barcode);
+		/*Resource<ItemStock> resource = new Resource<>(stock);
+		Link selfRel = linkTo(methodOn(ItemMasterServiceProxy.class).getItemById(stock.getItemId())).withSelfRel();
+		resource.add(selfRel.withRel("item-master"));*/
+		return stock;
 	}
 	
 	@RequestMapping(value = "/item/{itemId}", method = RequestMethod.GET)

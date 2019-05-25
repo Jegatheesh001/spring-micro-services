@@ -16,6 +16,9 @@ import com.myworld.microservices.itemstockservice.repository.ItemStockRepository
  */
 @Service
 public class ItemStockService {
+	
+	@Autowired
+	private ItemMasterServiceProxy itemMasterProxy; 
 
 	@Autowired
 	private ItemStockRepository itemStockRepository;
@@ -30,8 +33,13 @@ public class ItemStockService {
 	}
 
 	public ItemStock getStock(Integer officeId, Integer departmentId, String barcode) {
-		Optional<ItemStock> stock = itemStockRepository.findByOfficeIdAndDepartmentIdAndBarcodeIgnoreCase(officeId, departmentId, barcode);
-		return stock.isPresent() ? stock.get() : null;
+		Optional<ItemStock> opt = itemStockRepository.findByOfficeIdAndDepartmentIdAndBarcodeIgnoreCase(officeId, departmentId, barcode);
+		if(opt.isPresent()) {
+			ItemStock stock = opt.get();
+			stock.setItem(itemMasterProxy.getItemById(stock.getItemId()));
+			return stock;
+		}
+		return null;
 	}
 	
 	public List<ItemStock> getStockByItemId(Integer itemId) {
