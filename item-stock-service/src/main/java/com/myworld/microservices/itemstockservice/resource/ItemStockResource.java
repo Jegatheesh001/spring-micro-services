@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.myworld.microservices.itemstockservice.entity.ItemStock;
 import com.myworld.microservices.itemstockservice.service.ItemStockService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 /**
  * @author Jegatheesh <br>
  *         Created on 24-May-2019
@@ -38,7 +41,9 @@ public class ItemStockResource {
 	}
 	
 	@RequestMapping(value = "/barcode/{barcode}", method = RequestMethod.GET)
-	public List<ItemStock> getStockByBarcode(@PathVariable String barcode) {
+	@ApiOperation(value = "Find Stock By barcode", notes = "Provide a valid barcode of the product")
+	public List<ItemStock> getStockByBarcode(
+			@ApiParam(value = "Barcode information", required = true) @PathVariable String barcode) {
 		return itemStockService.getStockByBarcode(barcode);
 	}
 	
